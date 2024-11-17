@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Этот скрипт модернизирован для включения публичного ключа SSH и других необходимых настроек.
+# This file will be sourced in init.sh
 
 # https://github.com/MushroomFleet/Runpod-init
 
@@ -19,26 +19,26 @@ PIP_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/cubiq/ComfyUI_essentials"
-    "https://github.com/MushroomFleet/DJZ-Nodes"
-    "https://github.com/Gourieff/comfyui-reactor-node"
-    "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
-    "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes"
-    "https://github.com/rgthree/rgthree-comfy"
-    "https://github.com/crystian/ComfyUI-Crystools"
-    "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
-    "https://github.com/giriss/comfy-image-saver"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/WASasquatch/was-node-suite-comfyui"
-    "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
-    "https://github.com/melMass/comfy_mtb"
-    "https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes"
-    "https://github.com/sipherxyz/comfyui-art-venture"
-    "https://github.com/twri/sdxl_prompt_styler"
-    "https://github.com/hylarucoder/comfyui-copilot"
-    "https://github.com/kijai/ComfyUI-KJNodes"
-    "https://github.com/KoreTeknology/ComfyUI-Universal-Styler"
+	"https://github.com/ltdrdata/ComfyUI-Manager"
+	"https://github.com/cubiq/ComfyUI_essentials"
+	"https://github.com/MushroomFleet/DJZ-Nodes"
+	"https://github.com/Gourieff/comfyui-reactor-node"
+	"https://github.com/ltdrdata/ComfyUI-Impact-Pack"
+	"https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes"
+	"https://github.com/rgthree/rgthree-comfy"
+	"https://github.com/crystian/ComfyUI-Crystools"
+	"https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
+	"https://github.com/giriss/comfy-image-saver"
+	"https://github.com/Fannovel16/comfyui_controlnet_aux"
+	"https://github.com/WASasquatch/was-node-suite-comfyui"
+	"https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
+	"https://github.com/melMass/comfy_mtb"
+	"https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes"
+	"https://github.com/sipherxyz/comfyui-art-venture"
+	"https://github.com/twri/sdxl_prompt_styler"
+	"https://github.com/hylarucoder/comfyui-copilot"
+	"https://github.com/kijai/ComfyUI-KJNodes"
+	"https://github.com/KoreTeknology/ComfyUI-Universal-Styler"
     "https://github.com/kijai/ComfyUI-MochiWrapper"
     "https://github.com/city96/ComfyUI_ExtraModels"
     "https://github.com/chflame163/ComfyUI_LayerStyle"
@@ -46,15 +46,65 @@ NODES=(
 )
 
 WORKFLOWS=(
-    "https://github.com/MushroomFleet/DJZ-Workflows"
+	"https://github.com/MushroomFleet/DJZ-Workflows"
 )
 
-# Добавление публичного SSH-ключа
-mkdir -p ~/.ssh
-if [[ -n "$PUBLIC_KEY" ]]; then
-    echo "$PUBLIC_KEY" >> ~/.ssh/authorized_keys
-    chmod 600 ~/.ssh/authorized_keys
-fi
+CHECKPOINT_MODELS=(
+	#"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
+	#"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
+	#"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
+	#"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
+)
+
+UNET_MODELS=(
+	#"https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/flux1-dev.sft"
+)
+
+CLIP_MODELS=(
+	#"https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/clip_l.safetensors"
+	#"https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/t5xxl_fp16.safetensors"
+)
+
+LORA_MODELS=(
+	#"https://huggingface.co/mushroomfleet/Flux-Lora-Collection/resolve/main/AssassinKahb-8-16-e9-10.safetensors"
+)
+
+VAE_MODELS=(
+    #"https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/ae.sft"
+    #"https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors"
+)
+
+ESRGAN_MODELS=(
+    #"https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
+    "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
+    #"https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
+)
+
+CONTROLNET_MODELS=(
+	#"https://huggingface.co/XLabs-AI/flux-controlnet-collections/resolve/main/flux-hed-controlnet-v3.safetensors"
+	#"https://huggingface.co/XLabs-AI/flux-controlnet-collections/resolve/main/flux-canny-controlnet-v3.safetensors"
+	#"https://huggingface.co/XLabs-AI/flux-controlnet-collections/resolve/main/flux-depth-controlnet-v3.safetensors"
+    #"https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/diffusers_xl_canny_mid.safetensors"
+    #"https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/diffusers_xl_depth_mid.safetensors"
+    #"https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_openpose.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors"
+    #"https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_depth_fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_hed-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_mlsd-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_normal-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_scribble-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_seg-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_canny-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_color-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_depth-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_keypose-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_openpose-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_seg-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_sketch-fp16.safetensors"
+    #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_style-fp16.safetensors"
+)
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -188,6 +238,38 @@ function provisioning_print_end() {
     printf "\nProvisioning complete:  Web UI will start now\n\n"
 }
 
+function provisioning_has_valid_hf_token() {
+    [[ -n "$HF_TOKEN" ]] || return 1
+    url="https://huggingface.co/api/whoami-v2"
+
+    response=$(curl -o /dev/null -s -w "%{http_code}" -X GET "$url" \
+        -H "Authorization: Bearer $HF_TOKEN" \
+        -H "Content-Type: application/json")
+
+    # Check if the token is valid
+    if [ "$response" -eq 200 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function provisioning_has_valid_civitai_token() {
+    [[ -n "$CIVITAI_TOKEN" ]] || return 1
+    url="https://civitai.com/api/v1/models?hidden=1&limit=1"
+
+    response=$(curl -o /dev/null -s -w "%{http_code}" -X GET "$url" \
+        -H "Authorization: Bearer $CIVITAI_TOKEN" \
+        -H "Content-Type: application/json")
+
+    # Check if the token is valid
+    if [ "$response" -eq 200 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Download from $1 URL to $2 file path
 function provisioning_download() {
     if [[ -n $HF_TOKEN && $1 =~ ^https://([a-zA-Z0-9_-]+\.)?huggingface\.co(/|$|\?) ]]; then
@@ -204,7 +286,3 @@ function provisioning_download() {
 }
 
 provisioning_start
-
-# Запуск ComfyUI-сервера
-cd /workspace/ComfyUI
-python main.py --listen 0.0.0.0 --port 18188
